@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>坦克大作战 · 1v1</title>
+  <!-- 样式和游戏逻辑分开维护，上传时保持四个文件位于同一目录。 -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <div class="topbar">
+      <h1>坦克大作战 · 1v1</h1>
+      <div class="help">摧毁红色坦克，成为战场赢家</div>
+      <button id="soundBtn" type="button" aria-pressed="true">声音：开</button>
+    </div>
+    <div class="game-shell">
+      <!-- 固定逻辑地图尺寸，CSS 负责按窗口大小缩放显示。 -->
+      <canvas id="game" width="1920" height="1080" aria-label="坦克大作战游戏画布"></canvas>
+      <div class="hud">
+        <div class="panel">
+          <div class="label">你的坦克 · 蓝方</div>
+          <div class="bar"><div id="playerBar" class="fill player-fill"></div></div>
+          <div id="playerStatus" class="status">生命值 200 / 200 · 击毁 0</div>
+        </div>
+        <div class="panel right">
+          <div class="label">敌方坦克 · 红方</div>
+          <div class="bar"><div id="enemyBar" class="fill enemy-fill"></div></div>
+          <div id="enemyStatus" class="status">生命值 200 / 200</div>
+        </div>
+      </div>
+      <!-- 初始显示开始界面；战斗结算时复用此区域。 -->
+      <div id="overlay" class="overlay">
+        <div class="card">
+          <h2 id="resultTitle">坦克大作战</h2>
+          <p id="resultText">双方生命值 200。灰色钢墙不可破坏，棕色砖墙可以击碎。电脑用 WASD 移动、鼠标射击；手机用左摇杆移动，拖动右摇杆瞄准并开火。</p>
+          <div class="setup">
+            <label for="difficulty">人机难度</label>
+            <select id="difficulty">
+              <option value="easy">简单</option>
+              <option value="normal" selected>普通</option>
+              <option value="hard">困难</option>
+            </select>
+            <p id="difficultyHint" class="setup-hint">会绕墙、破砖，尝试提前瞄准和躲避近处子弹。</p>
+            <label for="barrelLength">炮筒长度 <output id="barrelValue" for="barrelLength">30</output></label>
+            <input id="barrelLength" type="range" min="20" max="42" value="30" />
+          </div>
+          <button id="restartBtn">开始游戏</button>
+        </div>
+      </div>
+    </div>
+    <div class="touch-controls" aria-label="触屏操作">
+      <div class="stick-group">
+        <div id="moveStick" class="stick" aria-label="移动摇杆"><span class="stick-knob"></span></div>
+        <span>移动</span>
+      </div>
+      <p class="touch-hint">左手移动 · 右手瞄准开火<br>松开停止 · 横屏视野更大</p>
+      <div class="stick-group">
+        <div id="aimStick" class="stick aim-stick" aria-label="瞄准开火摇杆"><span class="stick-knob"></span></div>
+        <span>瞄准 / 开火</span>
+      </div>
+    </div>
+    <div class="controls">
+      <span><kbd>WASD</kbd> / <kbd>方向键</kbd> 移动</span>
+      <span>鼠标控制独立炮塔，车身随移动转向</span><span>按住鼠标左键或 <kbd>空格</kbd> 开火</span>
+      <span>子弹可反弹 4 次（第 5 次碰墙消失）</span>
+      <span>地图 1920 × 1080 · 灰色钢墙：坚固 · 棕色砖墙：可破坏</span>
+      <span class="legend"><span><i class="dot blue"></i>玩家</span><span><i class="dot red"></i>敌人</span><span>绿色 » 移速</span><span>黄色 ● 大子弹</span><span>紫色 ×3 三连发</span></span>
+    </div>
+  </main>
+  <!-- 放在页面元素之后，保证脚本执行时能够找到画布和按钮。 -->
+  <script src="game.js"></script>
+</body>
+</html>
